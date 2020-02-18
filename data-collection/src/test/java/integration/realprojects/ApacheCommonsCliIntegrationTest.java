@@ -62,7 +62,6 @@ public class ApacheCommonsCliIntegrationTest extends IntegrationBaseTest {
 
 	@Test
 	public void commitMetaData(){
-		//TODO: How to check the commit url without changing IntegrationBasetest, as the
 		String renameCommit = "04490af06faa8fd1be15da88172beb32218dd336";
 		assertMetaDataRefactoring(
 				renameCommit,
@@ -83,16 +82,15 @@ public class ApacheCommonsCliIntegrationTest extends IntegrationBaseTest {
 				"Rename Parameter\topts : Options to options : Options in method public parse(options Options, arguments String[], stopAtNonOption boolean) : CommandLine in class org.apache.commons.cli.Parser",
 				"@local/repos/commons-cli/" + moveCommit);
 
-		// TODO: this is wrong, the id of the commit in a 'StableCommit' is the base commit, i.e., where the class started to become 'stable' for X commits
 		String stableCommit1 = "aae50c585ec3ac33c6a9af792e80378904a73195";
 		assertMetaDataStable(
 				stableCommit1,
-				"@local/repos/commons-cli/" + renameCommit);
+				"@local/repos/commons-cli/" + stableCommit1);
 
 		String stableCommit2 = "745d1a535c9cf45d24455afc150b808981c8e0df";
 		assertMetaDataStable(
 				stableCommit2,
-				"@local/repos/commons-cli/" + renameCommit);
+				"@local/repos/commons-cli/" + stableCommit2);
 	}
 
 	// this test checks the Extract Method that has happened in #269eae18a911f792895d0402f5dd4e7913410523,
