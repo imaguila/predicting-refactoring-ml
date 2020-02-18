@@ -85,7 +85,7 @@ public class R4ToyProjectTest extends IntegrationBaseTest {
 		//no check if the class metrics were tracked and set correct
 		//TODO: Should the qtyOfCommits not be 3, as it is the 4th commit changing this file?
 		ProcessMetrics doubleRenameMetrics1 = new ProcessMetrics(
-				3,
+				2,
 				34,
 				4,
 				1,
@@ -95,9 +95,9 @@ public class R4ToyProjectTest extends IntegrationBaseTest {
 				0,
 				1
 		);
-		//assertProcessMetrics(filterCommit(refactoringCommitList, doubleRenameCommit).get(0), doubleRenameMetrics1);
+		assertProcessMetrics(filterCommit(refactoringCommitList, doubleRenameCommit).get(0), doubleRenameMetrics1);
 		ProcessMetrics doubleRenameMetrics2 = new ProcessMetrics(
-				3,
+				2,
 				34,
 				4,
 				1,
@@ -107,10 +107,10 @@ public class R4ToyProjectTest extends IntegrationBaseTest {
 				0,
 				2
 		);
-//		assertProcessMetrics(filterCommit(refactoringCommitList, doubleRenameCommit).get(1), doubleRenameMetrics2);
+		assertProcessMetrics(filterCommit(refactoringCommitList, doubleRenameCommit).get(1), doubleRenameMetrics2);
 
 		ProcessMetrics renameClassMetrics = new ProcessMetrics(
-				5,
+				4,
 				36,
 				6,
 				2,
@@ -123,7 +123,7 @@ public class R4ToyProjectTest extends IntegrationBaseTest {
 		//assertProcessMetrics(filterCommit(refactoringCommitList, renameClass).get(0), renameClassMetrics);
 		//TODO: The author owner ship metric is a bit weird with 0.4, I would expect something like 0.33
 		ProcessMetrics renameFullMetrics = new ProcessMetrics(
-				6,
+				5,
 				37,
 				7,
 				3,
@@ -150,31 +150,30 @@ public class R4ToyProjectTest extends IntegrationBaseTest {
 	public void metrics() {
 		List<RefactoringCommit> refactoringCommitList = getRefactoringCommits();
 		ProcessMetrics methodExtract = new ProcessMetrics(
+				1,
+				26,
 				0,
+				1,
 				0,
-				0,
-				0,
-				0,
-				0,
-				0.0,
+				1,
+				1.0,
 				0,
 				0
 		);
-		//assertProcessMetrics(filterCommit(refactoringCommitList, "dd9aa00b03c9456c69c5e6566040fb994d7c9d98").get(0), methodExtract);
+		assertProcessMetrics(filterCommit(refactoringCommitList, "dd9aa00b03c9456c69c5e6566040fb994d7c9d98").get(0), methodExtract);
 
-		//TODO: The author owner ship metric is a bit weird with 0.5, I would expect something like 0.25
 		ProcessMetrics methodRename = new ProcessMetrics(
-				7,
+				6,
 				38,
 				8,
 				4,
 				0,
 				4,
-				0.25,
+				0.5,
 				0,
 				5
 		);
-//		assertProcessMetrics(filterCommit(refactoringCommitList, "d3b912566712bdeda096c60a8887dd96b76ceb7b").get(0), methodRename);
+ 		assertProcessMetrics(filterCommit(refactoringCommitList, "d3b912566712bdeda096c60a8887dd96b76ceb7b").get(0), methodRename);
 
 		// the next two assertions come directly from a 'cloc .' in the project
 		Assert.assertEquals(29, project.getJavaLoc());

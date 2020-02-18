@@ -155,7 +155,7 @@ public class ApacheCommonsCSVIntegrationTest extends IntegrationBaseTest {
 
     // check the number of test and production files as well as their LOC
     @Test
-    public void projectSize() {
+    public void projectMetrics() {
         // find . -name "*.java" | grep "/test/" | wc
         Assert.assertEquals(23, project.getNumberOfTestFiles());
 

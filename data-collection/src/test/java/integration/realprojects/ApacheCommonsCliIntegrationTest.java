@@ -32,9 +32,7 @@ public class ApacheCommonsCliIntegrationTest extends IntegrationBaseTest {
 		return 10;
 	}
 
-	/*
-	Test the isInnerClass boolean for both refactoricommit and stablecommit.
-	 */
+	//Test the isInnerClass boolean for both yes and no.
 	@Test
 	public void isInnerClass() {
 		List<RefactoringCommit> refactoringCommitList = getRefactoringCommits().stream().filter(commit -> commit.getClassName().equals("org.apache.commons.cli.HelpFormatter")||
@@ -49,17 +47,17 @@ public class ApacheCommonsCliIntegrationTest extends IntegrationBaseTest {
 		Assert.assertEquals(1, areInnerClassesInRefactorings.size());
 		Assert.assertEquals(9, areNotInnerClassesInRefactorings.size());
 
-//		List<StableCommit> stableCommits = getStableCommits().stream().filter(commit -> commit.getClassName().equals("org.apache.commons.cli.HelpFormatter")||
-//				commit.getClassName().equals("org.apache.commons.cli.HelpFormatter.StringBufferComparator")).collect(Collectors.toList());
-//		Assert.assertEquals(927, stableCommits.size());
-//
-//		List<StableCommit> areInnerClassesInStable = stableCommits.stream().filter(commit ->
-//				commit.getClassMetrics().isInnerClass()
-//				&& commit.getClassName().equals("org.apache.commons.cli.HelpFormatter.StringBufferComparator")).collect(Collectors.toList());
-//		List<StableCommit> areNotInnerClassesInStable = stableCommits.stream().filter(commit -> !commit.getClassMetrics().isInnerClass()).collect(Collectors.toList());
-//
-//		Assert.assertEquals(13, areInnerClassesInStable.size());
-//		Assert.assertEquals(914, areNotInnerClassesInStable.size());
+		List<StableCommit> stableCommits = getStableCommits().stream().filter(commit -> commit.getClassName().equals("org.apache.commons.cli.HelpFormatter")||
+				commit.getClassName().equals("org.apache.commons.cli.HelpFormatter.StringBufferComparator")).collect(Collectors.toList());
+		Assert.assertEquals(927, stableCommits.size());
+
+		List<StableCommit> areInnerClassesInStable = stableCommits.stream().filter(commit ->
+				commit.getClassMetrics().isInnerClass()
+				&& commit.getClassName().equals("org.apache.commons.cli.HelpFormatter.StringBufferComparator")).collect(Collectors.toList());
+		List<StableCommit> areNotInnerClassesInStable = stableCommits.stream().filter(commit -> !commit.getClassMetrics().isInnerClass()).collect(Collectors.toList());
+
+		Assert.assertEquals(13, areInnerClassesInStable.size());
+		Assert.assertEquals(914, areNotInnerClassesInStable.size());
 	}
 
 	@Test
@@ -85,16 +83,16 @@ public class ApacheCommonsCliIntegrationTest extends IntegrationBaseTest {
 				"Rename Parameter\topts : Options to options : Options in method public parse(options Options, arguments String[], stopAtNonOption boolean) : CommandLine in class org.apache.commons.cli.Parser",
 				"@local/repos/commons-cli/" + moveCommit);
 
-		// TODO: this is wrong, the id of the commit in a 'No' is the base commit, i.e., where the class started to become 'stable' for X commits
-//		String stableCommit1 = "aae50c585ec3ac33c6a9af792e80378904a73195";
-//		assertMetaDataNo(
-//				stableCommit1,
-//				"@local/repos/commons-cli/" + renameCommit);
-//
-//		String stableCommit2 = "745d1a535c9cf45d24455afc150b808981c8e0df";
-//		assertMetaDataNo(
-//				stableCommit2,
-//				"@local/repos/commons-cli/" + renameCommit);
+		// TODO: this is wrong, the id of the commit in a 'StableCommit' is the base commit, i.e., where the class started to become 'stable' for X commits
+		String stableCommit1 = "aae50c585ec3ac33c6a9af792e80378904a73195";
+		assertMetaDataStable(
+				stableCommit1,
+				"@local/repos/commons-cli/" + renameCommit);
+
+		String stableCommit2 = "745d1a535c9cf45d24455afc150b808981c8e0df";
+		assertMetaDataStable(
+				stableCommit2,
+				"@local/repos/commons-cli/" + renameCommit);
 	}
 
 	// this test checks the Extract Method that has happened in #269eae18a911f792895d0402f5dd4e7913410523,
@@ -138,22 +136,19 @@ public class ApacheCommonsCliIntegrationTest extends IntegrationBaseTest {
 
 		// the file should appear twice as examples of 'no'
 		assertStableRefactoring(stableCommitList, "aae50c585ec3ac33c6a9af792e80378904a73195", "5470bcaa9d75d73fb9c687fa13e12d642c75984f");
-		// TODO: assertions related to the values of the No metrics
+		// TODO: assertions related to the values of the StableCommit metrics
 	}
 
 	// check the number of test and production files as well as their LOC
 	@Test
-	public void t3() {
-
-		// the next two assertions come directly from a 'cloc .' in the project
-		Assert.assertEquals(7070L, project.getJavaLoc());
-		Assert.assertEquals(52L, project.getNumberOfProductionFiles() + project.getNumberOfTestFiles());
-
+	public void projectMetrics() {
 		// find . -name "*.java" | grep "/test/" | wc
 		Assert.assertEquals(29, project.getNumberOfTestFiles());
 
 		// 52 - 29
 		Assert.assertEquals(23, project.getNumberOfProductionFiles());
+
+		Assert.assertEquals(52L, project.getNumberOfProductionFiles() + project.getNumberOfTestFiles());
 
 		// cloc . --by-file | grep "/test/"
 		Assert.assertEquals(4280, project.getTestLoc());
@@ -161,5 +156,7 @@ public class ApacheCommonsCliIntegrationTest extends IntegrationBaseTest {
 		// 7070 - 4280
 		Assert.assertEquals(2790, project.getProductionLoc());
 
+		// the next two assertions come directly from a 'cloc .' in the project
+		Assert.assertEquals(7070L, project.getJavaLoc());
 	}
 }
