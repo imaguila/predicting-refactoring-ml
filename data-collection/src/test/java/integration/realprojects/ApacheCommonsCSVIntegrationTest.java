@@ -163,25 +163,21 @@ public class ApacheCommonsCSVIntegrationTest extends IntegrationBaseTest {
     // check the number of test and production files as well as their LOC
     @Test
     public void projectSize() {
-
-        // the next two assertions come directly from a 'cloc .' in the project
-        Assert.assertEquals(6994L, project.getJavaLoc());
-        Assert.assertEquals(35L, project.getNumberOfProductionFiles() + project.getNumberOfTestFiles());
-
         // find . -name "*.java" | grep "/test/" | wc
         Assert.assertEquals(23, project.getNumberOfTestFiles());
 
         // 35 - 23
         Assert.assertEquals(12, project.getNumberOfProductionFiles());
 
-        // cloc . --by-file | grep "/test/"
-        Assert.assertEquals(5114, project.getTestLoc());
+        Assert.assertEquals(35L, project.getNumberOfProductionFiles() + project.getNumberOfTestFiles());
 
         // 6994 - 5114
         Assert.assertEquals(1880, project.getProductionLoc());
 
+        // cloc . --by-file | grep "/test/"
+        Assert.assertEquals(5114, project.getTestLoc());
 
+        // the next two assertions come directly from a 'cloc .' in the project
+        Assert.assertEquals(6994L, project.getJavaLoc());
     }
-
-
 }
